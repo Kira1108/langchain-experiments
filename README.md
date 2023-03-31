@@ -20,6 +20,11 @@ Current conversation:
 Last line:
 Human: {input}
 You:"""
+
+ENTITY_MEMORY_CONVERSATION_TEMPLATE = PromptTemplate(
+    input_variables=["entities", "history", "input"],
+    template=_DEFAULT_ENTITY_MEMORY_CONVERSATION_TEMPLATE,
+)
 ```
 ```txt
 你是由OpenAI训练的大型语言模型提供技术支持的人工智能助手。你的设计旨在能够协助完成各种任务，
@@ -40,11 +45,6 @@ You:"""
 ```
 
 ```python
-ENTITY_MEMORY_CONVERSATION_TEMPLATE = PromptTemplate(
-    input_variables=["entities", "history", "input"],
-    template=_DEFAULT_ENTITY_MEMORY_CONVERSATION_TEMPLATE,
-)
-
 _DEFAULT_SUMMARIZER_TEMPLATE = """Progressively summarize the lines of conversation provided, adding onto the previous summary returning a new summary.
 EXAMPLE
 Current summary:
@@ -63,7 +63,29 @@ New summary:"""
 SUMMARY_PROMPT = PromptTemplate(
     input_variables=["summary", "new_lines"], template=_DEFAULT_SUMMARIZER_TEMPLATE
 )
+```
 
+```txt
+逐步总结提供的对话内容，将新的摘要添加到以前的摘要中，返回一个新的摘要。
+
+例子：
+当前摘要：
+人类问人工智能对人工智能的看法。 人工智能认为人工智能是一种有益力量。
+新的对话行：
+人类：你为什么认为人工智能是有益的力量？
+人工智能：因为人工智能将帮助人类发挥他们的全部潜力。
+新的摘要：
+人类问人工智能对人工智能的看法。 人工智能认为人工智能是一种有益力量，因为它将帮助人类发挥他们的全部潜力。
+例子结束
+
+当前摘要：
+{summary}
+新的对话行：
+{new_lines}
+新的摘要：
+```
+
+```python
 _DEFAULT_ENTITY_EXTRACTION_TEMPLATE = """You are an AI assistant reading the transcript of a conversation between an AI and a human. Extract all of the proper nouns from the last line of conversation. As a guideline, a proper noun is generally capitalized. You should definitely extract all names and places.
 The conversation history is provided just in case of a coreference (e.g. "What do you know about him" where "him" is defined in a previous line) -- ignore items mentioned there that are not in the last line.
 Return the output as a single comma-separated list, or NONE if there is nothing of note to return (e.g. the user is just issuing a greeting or having a simple conversation).
