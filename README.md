@@ -1,5 +1,5 @@
 # langchain-experiments
-挺没劲的，都是一些很没用的东西
+对于个人使用来说，调接口并维护memory是一件极其奢侈的事情，但是给给公司用搞钱还是很不错的，反正别自己花钱维护对话历史就好了。      
 
 ![image](https://user-images.githubusercontent.com/17697154/229182819-3da19c61-62ed-4d80-ae16-82bf3fd95c0b.png)
 
