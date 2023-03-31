@@ -117,7 +117,44 @@ Output:"""
 ENTITY_EXTRACTION_PROMPT = PromptTemplate(
     input_variables=["history", "input"], template=_DEFAULT_ENTITY_EXTRACTION_TEMPLATE
 )
+```
 
+```txt
+你是一位 AI 助手，正在阅读 AI 和人类之间对话的记录。   
+提取出最后一行对话中的所有专有名词。作为指南，专有名词通常大写。您应该提取所有名称和地点。   
+为了防止指代问题（例如，“你对他了解多少”中的“他”在前一行中定义）提供了对话历史记录--忽略其中在最后一行未提到的内容。  
+将输出作为单个逗号分隔的列表返回，如果没有要返回的内容（例如，用户只是打招呼或进行简单对话），则返回 NONE。
+
+例子：
+对话历史：
+人 #1：今天怎么样？
+AI：“很好！你呢？”
+人 #1：好！忙着开发 Langchain。有很多事要做。
+AI：“听起来很辛苦！你做了哪些事情让 Langchain 变得更好？”
+最后一行：
+人 #1：我正在尝试改进 Langchain 的界面、用户体验、与用户可能需要的各种产品的集成...很多东西。
+输出：Langchain
+例子结束
+
+例子：
+对话历史：
+人 #1：今天怎么样？
+AI：“很好！你呢？”
+人 #1：好！忙着开发 Langchain。有很多事要做。
+AI：“听起来很辛苦！你做了哪些事情让 Langchain 变得更好？”
+最后一行：
+人 #1：我正在尝试改进 Langchain 的界面、用户体验、与用户可能需要的各种产品的集成...很多东西。我正在与人 #2 合作。
+输出：Langchain，人 #2
+例子结束
+
+对话历史（仅供参考）：
+{history}
+对话中的最后一行（用于提取）：
+人类：{input}
+输出：
+```
+
+```python
 _DEFAULT_ENTITY_SUMMARIZATION_TEMPLATE = """You are an AI assistant helping a human keep track of facts about relevant people, places, and concepts in their life. Update the summary of the provided entity in the "Entity" section based on the last line of your conversation with the human. If you are writing the summary for the first time, return a single sentence.
 The update should only include facts that are relayed in the last line of conversation about the provided entity, and should only contain facts about the provided entity.
 If there is no new information about the provided entity or the information is not worth noting (not an important or relevant fact to remember long-term), return the existing summary unchanged.
