@@ -172,8 +172,24 @@ ENTITY_SUMMARIZATION_PROMPT = PromptTemplate(
     input_variables=["entity", "summary", "history", "input"],
     template=_DEFAULT_ENTITY_SUMMARIZATION_TEMPLATE,
 )
+```
 
+```txt
+你是一位 AI 助手，正在帮助人类追踪他们生活中相关人物、地点和概念的信息。根据您与人类的最后一行对话，更新“实体”部分提供的实体的摘要。如果您是第一次编写摘要，则返回一个句子。
+更新应仅包括有关提供的实体的最后一行对话中传达的事实，并且应仅包含有关提供的实体的事实。
+如果提供的实体没有新信息或信息不值得注意（不是长期记忆的重要或相关事实），则返回现有摘要而不变。
+完整的对话历史记录（供参考）：
+{history}
+要总结的实体：
+{entity}
+{entity} 的现有摘要：
+{summary}
+对话的最后一行：
+人类：{input}
+更新的摘要：
+```
 
+```python
 KG_TRIPLE_DELIMITER = "<|>"
 _DEFAULT_KNOWLEDGE_TRIPLE_EXTRACTION_TEMPLATE = (
     "You are a networked intelligence helping a human track knowledge triples"
